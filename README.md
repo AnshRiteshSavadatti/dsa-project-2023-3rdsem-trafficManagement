@@ -7,6 +7,7 @@ This repository contains all the DSA project codes undertaken during the third s
 
 ## Table of Contents
 - Shortest path == Dijktras Algorithm
+- Sort Vehicles == Quick Sort
 - ...
 
 ## Folder Structure
