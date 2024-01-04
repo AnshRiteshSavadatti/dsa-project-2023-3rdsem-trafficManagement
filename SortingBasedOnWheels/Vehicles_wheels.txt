@@ -1,0 +1,7 @@
+Car 4
+Truck 6
+Bicycle 2
+Motorcycle 2
+Bus 8
+Truck 14
+Car 4
