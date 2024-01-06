@@ -1,0 +1,8 @@
+Car 4 KA-25p972
+Truck 6 KA-63abcd
+Bicycle 2 MH-04ab46
+Motorcycle 2 KA-633b4d
+Bus 8 KA-24abcd
+Truck 14 KA-64abcd
+Car 4 KA-63ab55
+Bike 2 KA-63ab44
