@@ -1,0 +1,6 @@
+1 30 Green
+2 70 Red
+3 50 Orange
+5 23 Green
+4 35 Green
+6 56 Orange
