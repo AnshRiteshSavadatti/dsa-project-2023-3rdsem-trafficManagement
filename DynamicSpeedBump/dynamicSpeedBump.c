@@ -1,3 +1,4 @@
+// 22 👨‍💻
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -82,6 +83,16 @@ void freeSpeedBumps(SpeedBump* root) {
     }
 }
 
+// a function to write to file
+void writeToFile(SpeedBump* root, FILE* fp){
+    if(root != NULL){
+        writeToFile(root->left, fp);
+        fprintf(fp, "%d %d %d\n", root->laneNumber, root->trafficLevel, root->activated);
+        writeToFile(root->right, fp);
+    }
+    return;
+}
+
 // Main function for testing
 int main() {
     SpeedBump* speedBumpTree = NULL;
@@ -102,6 +113,7 @@ int main() {
         fscanf(fp, "%d %d %d", &Lane, &tLevel, &status);
         speedBumpTree = insertSpeedBump(speedBumpTree, Lane, tLevel, status);
     }
+    fclose(fp);
     // speedBumpTree = insertSpeedBump(speedBumpTree, 1, 10, false); // Deactivated in Lane 1, Traffic Level: 10
     // speedBumpTree = insertSpeedBump(speedBumpTree, 2, 15, true);  // Activated in Lane 2, Traffic Level: 15
     // speedBumpTree = insertSpeedBump(speedBumpTree, 3, 12, false); // Deactivated in Lane 3, Traffic Level: 12
@@ -117,7 +129,17 @@ int main() {
     // Displaying updated status of speed bumps after dynamic adjustments
     printf("\nUpdated Status of Smart Speed Bumps:\n");
     displaySpeedBumps(speedBumpTree);
-
+     
+    // writing the data back to secondary memory
+    fp = fopen("dynamicSpeedBump.txt", "w");
+    if(fp == NULL){
+        printf("dynamicSpeedBump file not found\n");
+        return -1;
+    }
+    writeToFile(speedBumpTree, fp);
+    fflush(fp);
+    // Closing the file after writing
+    fclose(fp);
     // Free allocated memory
     freeSpeedBumps(speedBumpTree);
 
