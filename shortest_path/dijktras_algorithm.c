@@ -58,6 +58,7 @@ void readGraphFromFile(int cost[MAX_VERTICES][MAX_VERTICES], int v) {
     int x, y, w;
     while (fscanf(file, "%d%d%d", &x, &y, &w) == 3) {
         cost[x][y] = w;
+        cost[y][x] = w;
     }
 
     fclose(file);
@@ -75,6 +76,7 @@ int main() {
         for(int j = 0; j < MAX_VERTICES; j++){
             cost[i][j] = 9999;
         }
+        cost[i][i] = 0;
     }
     readGraphFromFile(cost, v);
 

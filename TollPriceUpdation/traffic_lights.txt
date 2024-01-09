@@ -1,0 +1,37 @@
+Initial Traffic Lights Status:
+
+Traffic Lights Status:
+Traffic Light 1: Red
+Traffic Light 2: Red
+Traffic Light 3: Red
+Traffic Light 4: Red
+
+Traffic Lights Status:
+Traffic Light 1: Red
+Traffic Light 2: Red
+Traffic Light 3: Red
+Traffic Light 4: Red
+
+Traffic Lights Status:
+Traffic Light 1: Red
+Traffic Light 2: Red
+Traffic Light 3: Red
+Traffic Light 4: Red
+
+Traffic Lights Status:
+Traffic Light 1: Red
+Traffic Light 2: Red
+Traffic Light 3: Red
+Traffic Light 4: Red
+
+Traffic Lights Status:
+Traffic Light 1: Red
+Traffic Light 2: Red
+Traffic Light 3: Red
+Traffic Light 4: Red
+
+Traffic Lights Status:
+Traffic Light 1: Red
+Traffic Light 2: Red
+Traffic Light 3: Red
+Traffic Light 4: Red
