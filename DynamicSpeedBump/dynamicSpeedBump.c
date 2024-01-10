@@ -39,7 +39,7 @@ SpeedBump* insertSpeedBump(SpeedBump* root, int laneNumber, int trafficLevel, bo
 }
 
 // Function to activate or deactivate a speed bump based on traffic conditions
-void adjustSpeedBumpActivation(SpeedBump* root, int laneNumber, int newTrafficLevel) {
+SpeedBump* adjustSpeedBumpActivation(SpeedBump* root, int laneNumber, int newTrafficLevel) {
     SpeedBump* current = root;
 
     while (current != NULL) {
@@ -56,12 +56,13 @@ void adjustSpeedBumpActivation(SpeedBump* root, int laneNumber, int newTrafficLe
                 current->activated = false;
             }
             current->trafficLevel = newTrafficLevel;
-            return;
+            return root;
         }
     }
 
     // Lane not found
     printf("Lane not found: %d\n", laneNumber);
+    return root;
 }
 
 // Function to display the status of each speed bump in the binary search tree
@@ -123,8 +124,8 @@ int main() {
     displaySpeedBumps(speedBumpTree);
 
     // Simulating dynamic activation or deactivation based on new traffic conditions
-    adjustSpeedBumpActivation(speedBumpTree, 2, 18); // Activate a speed bump in Lane 2 (Traffic Level increased to 18)
-    adjustSpeedBumpActivation(speedBumpTree, 1, 20);  // Activate a speed bump in Lane 1 (Traffic Level increased to 20)
+    speedBumpTree = adjustSpeedBumpActivation(speedBumpTree, 4, 40); // Activate a speed bump in Lane 2 (Traffic Level increased to 18)
+    speedBumpTree = adjustSpeedBumpActivation(speedBumpTree, 1, 10);  // Activate a speed bump in Lane 1 (Traffic Level increased to 20)
 
     // Displaying updated status of speed bumps after dynamic adjustments
     printf("\nUpdated Status of Smart Speed Bumps:\n");

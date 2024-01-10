@@ -4,11 +4,20 @@
 // minimum spanning tree of the road network using Kruskal's algorithm.
 
 #include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+typedef struct dataNodesNames{
+    int n;
+    char name[50];
+    struct dataNodesNames* next;
+}Node;
 
 typedef struct node{
     int u;
     int v;
     int w;
+    char placeName[50];
 }NODE;
 
 NODE edges[30];
@@ -32,6 +41,30 @@ NODE edges[30];
 //     }
 //     return;
 // }
+
+// creating a node of linked list
+Node* create (int data, char n[]){
+    Node* newnode = (Node*)malloc(sizeof(Node));
+    newnode->n = data;
+    strcpy(newnode->name, n);
+    newnode->next = NULL;
+    return newnode;
+}
+
+// inserting at end in a linked list
+Node* insert(Node* head, int data, char n[]){
+    Node* newnode = create(data,n);
+    if(head == NULL){
+        return newnode;
+    }else{
+        Node* temp = head;
+        while(temp->next != NULL){
+            temp = temp->next;
+        }
+        temp->next = newnode;
+    }
+    return head;
+}
 
 void swap(NODE* a, NODE* b){
     NODE temp = *a;
@@ -110,13 +143,39 @@ void print(int arr[], int n){
     return;
 }
 
+// displaying the linkedlist which the relation between nodes and names
+void displyLinkedList(Node* head){
+    Node* temp = head;
+    while(temp != NULL){
+        printf("%d   %s\n",temp->n, temp->name);
+        temp = temp->next;
+    }
+    return;
+}
+
 
 int main(){
+    Node* head = NULL;
     int n;
     printf("Enter the number of edges\n");
     scanf("%d",&n);
     // input(edges, n);
 
+    // Reading the node and data relation file {kruskalsRepresentation}
+    FILE * f = fopen("kruskalsRepresentation.txt","r");
+    while(!feof(f)){
+        int n;
+        char name[50];
+        fscanf(f,"%d %s",&n, &name);
+        head = insert(head, n, name);
+    }
+
+    // closing the file
+    fclose(f);
+
+    // displaying the list
+    printf("The relation between the nodes and the names in city are \n");
+    displyLinkedList(head);
     // Reading input from file spanning.txt
     FILE* fp = fopen("spanning.txt", "r");
     int i =0;
@@ -124,6 +183,7 @@ int main(){
         fscanf(fp, "%d %d %d",&edges[i].u, &edges[i].v, &edges[i].w);
         i++;
     }
+
 
     // closing the file 
     fclose(fp);

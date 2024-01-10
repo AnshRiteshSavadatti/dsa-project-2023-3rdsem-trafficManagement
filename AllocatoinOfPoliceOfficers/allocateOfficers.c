@@ -50,32 +50,58 @@ int totalOfficersAssigned(Junction* junction) {
     return totalOfficers;
 }
 
-// assigining police officiers according to the given conditions below
-Junction* assignOfficers(Junction * root, int junction, int trafficLevel){
-    if(root != NULL){
-        if(junction < root->junction_no){
-            assignOfficers(root->right, junction, trafficLevel);
-        }else if(junction > root->junction_no){
-            assignOfficers(root->left, junction, trafficLevel);
-        }else{
+Junction* assignOfficers(Junction* root, int junction, int trafficLevel) {
+    if (root != NULL) {
+        if (junction < root->junction_no) {
+            root->left = assignOfficers(root->left, junction, trafficLevel);
+        } else if (junction > root->junction_no) {
+            root->right = assignOfficers(root->right, junction, trafficLevel);
+        } else {
             // taking few cases here
             // if trafficLevel 0 - 20 0 officers
             // 20 - 35 1 officer
-            // 35 - 70 2 officer
-            if(trafficLevel <= 20){
+            // 35 - 70 2 officers
+            if (trafficLevel <= 20) {
                 root->num_police_officers = 0;
                 root->traffic_level = trafficLevel;
-            }else if(trafficLevel > 70){
+            } else if (trafficLevel > 70) {
                 root->num_police_officers = 2;
                 root->traffic_level = trafficLevel;
-            }else{
+            } else {
                 root->num_police_officers = 1;
                 root->traffic_level = trafficLevel;
             }
-            return root;
         }
     }
+    return root;
 }
+
+// // assigining police officiers according to the given conditions below
+// Junction* assignOfficers(Junction * root, int junction, int trafficLevel){
+//     if(root != NULL){
+//         if(junction < root->junction_no){
+//             assignOfficers(root->right, junction, trafficLevel);
+//         }else if(junction > root->junction_no){
+//             assignOfficers(root->left, junction, trafficLevel);
+//         }else{
+//             // taking few cases here
+//             // if trafficLevel 0 - 20 0 officers
+//             // 20 - 35 1 officer
+//             // 35 - 70 2 officer
+//             if(trafficLevel <= 20){
+//                 root->num_police_officers = 0;
+//                 root->traffic_level = trafficLevel;
+//             }else if(trafficLevel > 70){
+//                 root->num_police_officers = 2;
+//                 root->traffic_level = trafficLevel;
+//             }else{
+//                 root->num_police_officers = 1;
+//                 root->traffic_level = trafficLevel;
+//             }
+//             return root;
+//         }
+//     }
+// }
 
 // Function to free the allocated memory for the junction tree
 void freeJunctionTree(Junction* junction) {
@@ -136,6 +162,8 @@ int main() {
     scanf("%d",&junction);
     printf("Enter the trafficLevel\n");
     scanf("%d",&trafficlevel);
+    // printf("Before assigned function\n");
+    // printInorder(root);
     root = assignOfficers(root, junction, trafficlevel);
 
     // printing the assigned officers after updation
