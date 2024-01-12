@@ -12,6 +12,7 @@ typedef struct dataNodesNames{
     char name[50];
     struct dataNodesNames* next;
 }Node;
+Node data[30];
 
 typedef struct node{
     int u;
@@ -42,29 +43,29 @@ NODE edges[30];
 //     return;
 // }
 
-// creating a node of linked list
-Node* create (int data, char n[]){
-    Node* newnode = (Node*)malloc(sizeof(Node));
-    newnode->n = data;
-    strcpy(newnode->name, n);
-    newnode->next = NULL;
-    return newnode;
-}
+// // creating a node of linked list
+// Node* create (int data, char n[]){
+//     Node* newnode = (Node*)malloc(sizeof(Node));
+//     newnode->n = data;
+//     strcpy(newnode->name, n);
+//     newnode->next = NULL; 
+//     return newnode;
+// }
 
-// inserting at end in a linked list
-Node* insert(Node* head, int data, char n[]){
-    Node* newnode = create(data,n);
-    if(head == NULL){
-        return newnode;
-    }else{
-        Node* temp = head;
-        while(temp->next != NULL){
-            temp = temp->next;
-        }
-        temp->next = newnode;
-    }
-    return head;
-}
+// // inserting at end in a linked list
+// Node* insert(Node* head, int data, char n[]){
+//     Node* newnode = create(data,n);
+//     if(head == NULL){
+//         return newnode;
+//     }else{
+//         Node* temp = head;
+//         while(temp->next != NULL){
+//             temp = temp->next;
+//         }
+//         temp->next = newnode;
+//     }
+//     return head;
+// }
 
 void swap(NODE* a, NODE* b){
     NODE temp = *a;
@@ -129,7 +130,7 @@ int kruskals(NODE edges[], int n, int arr[]){
         if(!find(arr, edges[i].u, edges[i].v)){
             union_(arr, 10, edges[i].u, edges[i].v);
             sum += edges[i].w;
-            printf("%d %d\n",edges[i].u, edges[i].v);
+            printf("%d %s  %d %s\n",edges[i].u,data[edges[i].u].name, edges[i].v,data[edges[i].v].name);
         }
     }
     printf("\n");
@@ -144,15 +145,21 @@ void print(int arr[], int n){
 }
 
 // displaying the linkedlist which the relation between nodes and names
-void displyLinkedList(Node* head){
-    Node* temp = head;
-    while(temp != NULL){
-        printf("%d   %s\n",temp->n, temp->name);
-        temp = temp->next;
+// void displyLinkedList(Node* head){
+//     Node* temp = head;
+//     while(temp != NULL){
+//         printf("%d   %s\n",temp->n, temp->name);
+//         temp = temp->next;
+//     }
+//     return;
+// }
+
+void displayData(int n){
+    for(int i=0; i<n; i++){
+        printf("%d %s\n",data[i].n, data[i].name);
     }
     return;
 }
-
 
 int main(){
     Node* head = NULL;
@@ -163,11 +170,16 @@ int main(){
 
     // Reading the node and data relation file {kruskalsRepresentation}
     FILE * f = fopen("kruskalsRepresentation.txt","r");
+    // while(!feof(f)){
+    //     int n;
+    //     char name[50];
+    //     fscanf(f,"%d %s",&n, &name);
+    //     head = insert(head, n, name);
+    // }
+    int j = 0;
     while(!feof(f)){
-        int n;
-        char name[50];
-        fscanf(f,"%d %s",&n, &name);
-        head = insert(head, n, name);
+        fscanf(f,"%d %s",&data[j].n, &data[j].name);
+        j++;
     }
 
     // closing the file
@@ -175,7 +187,8 @@ int main(){
 
     // displaying the list
     printf("The relation between the nodes and the names in city are \n");
-    displyLinkedList(head);
+    // displyLinkedList(head);
+    displayData(j);
     // Reading input from file spanning.txt
     FILE* fp = fopen("spanning.txt", "r");
     int i =0;

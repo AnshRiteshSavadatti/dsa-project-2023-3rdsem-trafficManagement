@@ -1,0 +1,35 @@
+# depslib dependency file v1.0
+1705064127 source:e:\ph dsa\traffic management\project\ansh\main.c
+	"constants.c"
+	"dynamicSpeedBump.c"
+	"AllocationOfPoliceOfficers.c"
+	"MinimalSpanningTree.c"
+	"dijktrasAlgorithm.c"
+	<time.h>
+
+1705033080 e:\ph dsa\traffic management\project\ansh\constants.c
+	"header_file.h"
+
+1705032977 e:\ph dsa\traffic management\project\ansh\header_file.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+	<math.h>
+	<limits.h>
+	<time.h>
+
+1704978472 e:\ph dsa\traffic management\project\ansh\dynamicspeedbump.c
+	"header_file.h"
+	"constants.c"
+
+1705064920 e:\ph dsa\traffic management\project\ansh\allocationofpoliceofficers.c
+	"header_file.h"
+	"constants.c"
+
+1705042628 e:\ph dsa\traffic management\project\ansh\minimalspanningtree.c
+	"header_file.h"
+	"constants.c"
+
+1705064157 e:\ph dsa\traffic management\project\ansh\dijktrasalgorithm.c
+

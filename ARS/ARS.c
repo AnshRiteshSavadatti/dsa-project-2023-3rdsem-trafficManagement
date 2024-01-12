@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include<stdbool.h>
 
+// *************************************************************************************
+// Allocatoin of police officers 
+
 // Define the structure for a junction node
 typedef struct Junction {
     int junction_no;
@@ -108,6 +111,9 @@ void writeFile(FILE* fp, Junction* root) {
     return;
 }
 
+// *****************************************************************************************************************
+// Dynamic speed bump
+
 // Structure to represent a smart speed bump
 typedef struct SpeedBump {
     int laneNumber;
@@ -198,12 +204,120 @@ void writeToFile(SpeedBump* root, FILE* fp){
     return;
 }
 
+// ************************************************************************************************************************************
+// working on kruskals algorithm
+// creating structure for dataNodeNames to connect nodes and names
+typedef struct dataNodesNames{
+    int n;
+    char name[50];
+    struct dataNodesNames* next;
+}Node;
+Node data[30];
+
+// creating a structure which the nodes and weight between them 
+typedef struct node{
+    int u;
+    int v;
+    int w;
+    char placeName[50];
+}NODE;
+
+NODE edges[30];
+
+// function to swap two nodes
+void swap(NODE* a, NODE* b){
+    NODE temp = *a;
+    *a = *b;
+    *b = temp;
+    return;
+}
+
+// quick partition code
+int partition(NODE a[], int l, int r){
+    NODE P = a[l];
+    int i = l;
+    int j = r+1;
+
+    // Using tonys logic of partition in quick sort
+    do{
+        do{
+            i++;
+        }while(P.w > a[i].w);
+        do{
+            j--;
+        }while(P.w < a[j].w);
+        swap(&a[i], &a[j]);
+    }while(i < j);
+
+    swap(&a[i], &a[j]);
+    swap(&a[l] , &a[j]);
+
+    return j;
+
+}
+
+// quickSort ie sorting the edges
+void quickSort(NODE edges[], int l, int r){
+    if(l < r){
+        // we can sort 
+        int p = partition(edges, l, r);
+        
+        // calling Quick Sort on both the parts
+        quickSort(edges, l, p-1);
+        quickSort(edges, p+1, r);
+    }
+    return;
+}
+
+// find function
+int find(int arr[], int u, int v){
+    if(arr[u] == arr[v])
+        return 1;
+    return 0;
+}
+
+// union function
+void union_(int arr[], int n, int u, int v){
+    int temp = arr[u];
+    for(int i=0; i<n; i++){
+        if(arr[i] == temp)
+            arr[i] = arr[v];
+    }
+    return;
+}
+
+// Implementation of Kruskals algorithm
+int kruskals(NODE edges[], int n, int arr[]){
+    int sum = 0;
+    for(int i=0; i<n; i++){
+        if(!find(arr, edges[i].u, edges[i].v)){
+            union_(arr, 10, edges[i].u, edges[i].v);
+            sum += edges[i].w;
+            printf("%d %s  %d %s\n",edges[i].u,data[edges[i].u].name, edges[i].v,data[edges[i].v].name);
+        }
+    }
+    printf("\n");
+    return sum;
+}
+
+// program to display the connections between the nodes and names of location
+void displayData(int n){
+    for(int i=0; i<n; i++){
+        printf("%d %s\n",data[i].n, data[i].name);
+    }
+    return;
+}
+
+
 // writing a main function to the above functions 
 int main() {
+    int n;
     Junction* root = NULL;
     FILE* fp;
     SpeedBump* speedBumpTree = NULL;
+    Node* head = NULL;
 
+//  Reading data for Allocation of police officers
     fp = fopen("file.txt", "r");
     // reading input from file
     while (!feof(fp)) {
@@ -213,6 +327,7 @@ int main() {
     }
     fclose(fp);
 
+    // Reading officers for Dynamic Speed Bumps
     FILE * fpp = fopen("dynamicSpeedBump.txt", "r");
     /// Checking if file is found
     if(fpp == NULL){
@@ -227,10 +342,21 @@ int main() {
     }
     fclose(fpp);
 
+    // reading the file for minimal spaning tree
+    FILE * f = fopen("kruskalsRepresentation.txt","r");
+    int j = 0;
+    while(!feof(f)){
+        fscanf(f,"%d %s",&data[j].n, &data[j].name);
+        j++;
+    }
+    // closing the file
+    fclose(f);
+
     while (1) {
         printf("Enter\n");
         printf("1 to know and change the position of officers\n");
         printf("2 to look at dynamic speed bumps and update them\n");
+        printf("3 to generate a minimal spanning tree for given nodes\n");
         // taking input for switch case
         int ch;
         scanf("%d", &ch);
@@ -280,7 +406,6 @@ int main() {
                     else{
                         break;
                     }
-
                     }
                 // Free the allocated memory for the junction tree
                 freeJunctionTree(root);
@@ -291,7 +416,7 @@ int main() {
 
                 // Simulating dynamic activation or deactivation based on new traffic conditions
                 while(1){
-                    int choice;
+                    int choice = 0;
                     printf("Enter 1 to update the status of speed bump");
                     printf(" {which will write it to file} or else 0\n");
                     scanf("%d",&choice);
@@ -327,6 +452,37 @@ int main() {
 
                 // Free allocated memory
                 freeSpeedBumps(speedBumpTree);
+                break;
+            case 3 : 
+                printf("Enter the number of edges\n");
+                scanf("%d",&n);
+                 printf("The relation between the nodes and the names in city are \n");
+                displayData(j);
+                // Reading input from file spanning.txt
+                fp = fopen("spanning.txt", "r");
+                int i =0;
+                while(!feof(fp)){
+                    fscanf(fp, "%d %d %d",&edges[i].u, &edges[i].v, &edges[i].w);
+                    i++;
+                }
+
+
+                // closing the file 
+                fclose(fp);
+
+                // sorting on basis of weight
+                quickSort(edges, 0, n);
+
+                int arr[8];
+                for(int i=0; i<8; i++){
+                    arr[i] = i;
+                }
+
+                // calling kruskal function
+                printf("The edges are\n");
+                int ans = kruskals(edges, n, arr);
+                // print(arr, 8);
+                printf("\nThe total weight is %d",ans);
                 break;
             default:
                 exit(0);
