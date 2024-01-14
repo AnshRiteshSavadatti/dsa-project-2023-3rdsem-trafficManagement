@@ -3,7 +3,7 @@
 #include "AllocationOfPoliceOfficers.c"
 #include "MinimalSpanningTree.c"
 #include "dijktrasAlgorithm.c"
-#include <time.h>
+#include "DFS.c"
 
 void menu(){
     for(int i=0; i<120; i++){
@@ -15,6 +15,7 @@ void menu(){
     printf("2 to change and view current speed bumps\n");
     printf("3 to generate minimal spanning tree\n");
     printf("4 to see shortest path by entering source\n");
+    printf("5 to see the details of node {DFS}\n");
     for(int i=0; i<120; i++){
         printf("*");
     }
@@ -78,6 +79,7 @@ int main()
                         break;
                     }
                     }
+                    printInorder(root);
                 // Free the allocated memory for the junction tree
                 freeJunctionTree(root);
                 break;
@@ -175,6 +177,8 @@ int main()
                 printf("The edges are\n");
                 int ans = kruskals(edges, 100, arr);
                 printf("\nThe total weight is %d",ans);
+                free(data);
+                free(edges);
                 break;
             case 4:
                 printf("Enter the number of vertices\n");
@@ -186,9 +190,11 @@ int main()
                 // nodesNames area[50];
                 int cost[MAX_VERTICES][MAX_VERTICES];
                 assignCostMatrixValue(cost);
+                generateRandomEdges(cost);
 
                 // reading the weights of graph from file
-                readGraphFromFile(cost);
+                //readGraphFromFile(cost);
+                writeGraphToFile(cost);
                 printf("HI!!!\n");
                 // loading the names of places on file with respective nodes
                 int n = loadThenodeNames(area, fp);
@@ -217,6 +223,29 @@ int main()
                 dijkstras(cost, v, src);
                 print(v, area);
                 break;
+            case 5:
+
+
+                // Input the number of vertices
+                printf("Enter the number of vertices: ");
+                scanf("%d", &n);
+
+                // Input the adjacency matrix from a fill
+                fillValue(fp, graph);
+
+                 // allocating memmory for nodes
+                DFS_Names * Names = (DFS_Names*) malloc (MAX *sizeof(DFS_Names));
+                fillNames(fp, Names);
+
+
+                // Input the starting vertex for DFS
+                printf("Enter the starting vertex for DFS: ");
+                scanf("%d", &start);
+
+                // Perform DFS and display the result
+                dfs(graph, n, start, Names);
+                break;
+
             default :
                 for(int i=0; i<120; i++){
                     printf("*");

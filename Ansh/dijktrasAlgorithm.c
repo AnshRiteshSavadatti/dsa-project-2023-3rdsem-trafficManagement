@@ -31,6 +31,7 @@ void print(int v, nodesNames a[]) {
     return;
 }
 
+/*
 void readGraphFromFile(int cost[MAX_VERTICES][MAX_VERTICES]) {
     fp = fopen("dijktrasNodes.txt", "r");
     if (fp == NULL) {
@@ -46,6 +47,39 @@ void readGraphFromFile(int cost[MAX_VERTICES][MAX_VERTICES]) {
     fclose(fp);
     return;
 }
+*/
+
+void writeGraphToFile(int cost[MAX_VERTICES][MAX_VERTICES]) {
+    fp = fopen("dijkstraNodes.txt", "w");
+    if (fp == NULL) {
+        printf("Error opening file");
+        return;
+    }
+
+    for (int i = 0; i < MAX_VERTICES; ++i) {
+        for (int j = i + 1; j < MAX_VERTICES; ++j) {
+            if (cost[i][j] != 0) {
+                fprintf(fp, "%d %d %d\n", i, j, cost[i][j]);
+            }
+        }
+    }
+
+    fclose(fp);
+}
+
+
+void generateRandomEdges(int cost[MAX_VERTICES][MAX_VERTICES]) {
+
+    // Create a connected graph
+    for (int i = 1; i < MAX_VERTICES; ++i) {
+        int edge1 = i;
+        int edge2 = rand() % i;  // Connect to a random node before the current one
+        int weight = rand() % 10 + 1;  // Random weight between 1 and 10
+        cost[edge1][edge2] = weight;
+        cost[edge2][edge1] = weight;  // Assuming an undirected graph
+    }
+}
+
 
 void assignCostMatrixValue(int m[][MAX_VERTICES]){
     for(int i= 0; i<MAX_VERTICES; i++){
@@ -59,7 +93,7 @@ void assignCostMatrixValue(int m[][MAX_VERTICES]){
 
 int loadThenodeNames(nodesNames a[], FILE* fp){
     int i = 0;
-    fp = fopen("Dijktras.txt", "r");
+    fp = fopen("DijktrasNodesAreaRelation.txt", "r");
     if(fp == NULL){
         printf("Error in opeaning in dijktras.txt\n");
         return -1;

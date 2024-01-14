@@ -26,6 +26,7 @@ FILE *flog;
 #define RESULT_NOT_FOUND            1005
 #define FILE_EMPTY_ERROR            1006
 #define STATUS_STACK_OVERFLOW      -1073741571
+#define MAX_VERTICES                100
 
 
 //**************************** smart speed bump **********************************************************
@@ -50,24 +51,30 @@ void writeToFile(SpeedBump* root, FILE* fp);
 //************************************* AllocationOfPoliceOfficers ***********************************************************
 
 // Define the structure for a junction node
-typedef struct Junction {
+struct Junction {
     int junction_no;
     int traffic_level;
     int num_police_officers;
     struct Junction* left;
     struct Junction* right;
-} Junction;
-Junction* root;
+    int height;
+};
+
+typedef struct Junction* JunctionNode;
+
+JunctionNode* root;
 
 // Function prototypes
-Junction* createJunction(int junction_no, int traffic_level, int num_police_officers);
-Junction* insertJunction(Junction* root, int junction_no, int traffic_level, int num_police_officers);
-int totalOfficersAssigned(Junction* junction);
-Junction* assignOfficers(Junction* root, int junction, int traffic_level);
-void freeJunctionTree(Junction* junction);
-void printInorder(Junction* root);
-void writeFile(FILE* fp, Junction* root);
-
+JunctionNode createJunction(int junction_no, int traffic_level, int num_police_officers);
+int height(JunctionNode node);
+JunctionNode rightRotate(JunctionNode x);
+JunctionNode leftRotate(JunctionNode x);
+JunctionNode rotate(JunctionNode node);
+JunctionNode insertJunction(JunctionNode root, int junction_no, int traffic_level, int num_police_officers);
+JunctionNode assignOfficers(JunctionNode root, int junction_no, int trafficLevel);
+void freeAVLTree(JunctionNode root);
+void printInorder(JunctionNode root);
+void writeFile(FILE* fp, JunctionNode root);
 //************************************* KruskalsMinimalSpanningTree ***********************************************************
 
 // making relation between node and area
@@ -107,5 +114,51 @@ typedef struct nodesNames{
     int index;
     char areaName[50];
 }nodesNames;
+
+void dijkstras(int cost[MAX_VERTICES][MAX_VERTICES], int v, int src);
+void print(int v, nodesNames a[]);
+// void readGraphFromFile(int cost[MAX_VERTICES][MAX_VERTICES]);  // Commented out
+void writeGraphToFile(int cost[MAX_VERTICES][MAX_VERTICES]);
+void generateRandomEdges(int cost[MAX_VERTICES][MAX_VERTICES]);
+void assignCostMatrixValue(int m[][MAX_VERTICES]);
+int loadThenodeNames(nodesNames a[], FILE* fp);
+int BruteForceStringMatch(char t[], char p[], int n, int m);
+int findSource(char source[], nodesNames a[], int v);
+void printAreaNames(int n, nodesNames a[]);
+
+
+//*************************************  DFS Traversal ***********************************************************
+#define MAX 100
+
+// DFS_Names structucture
+struct DFS_Names{
+    int number;
+    char name[50];
+};
+
+typedef struct DFS_Names DFS_Names;
+
+// Define a Node structure for the linked list
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+struct Stack {
+    struct Node *top;
+};
+
+// Define a typedef for a pointer to Stack as stack
+typedef struct Stack *stack;
+
+// Function prototypes
+void initstack(stack s);
+int isempty(stack s);
+void push(stack s, int data);
+int pop(stack s);
+void dfs(int graph[MAX][MAX], int n, int start, DFS_Names a[]);
+void fillValue(FILE *fp, int m[][MAX]);
+void fillNames(FILE *fp, DFS_Names a[]);
+
 
 #endif // HEADER_FILE_H_INCLUDED

@@ -1,12 +1,100 @@
-1 DESHPANDE_NAGAR
-2 KESHWAPUR
-3 DURGAD_BAIL
-4 OLD_HUBLI
-5 AYODHA_NAGAR
-6 HOSUR
-7 VIDYA_NAGAR
-8 UNKAL
-9 BARIDEVARKOPPA
-10 NAVNAGAR
-11 ISKON
-12 GANDINAGAR_DHARWAD
+Hubli
+Dharwad
+Gadag
+Belgaum
+Bagalkot
+Vijayapura
+Hospet
+Bellary
+Shivamogga
+Chikmagalur
+Hassan
+Mysore
+Mandya
+Tumkur
+Chitradurga
+Davanagere
+Birur
+Hassan
+Coorg
+Sakleshpur
+Chikkamagalur
+Tarikere
+Kadur
+Mudigere
+Belur
+Halebidu
+Hassan
+Sakleshpur
+Gundlupet
+Arkalgud
+Kushalnagar
+Madikeri
+Virajpet
+Somwarpet
+Belthangady
+Mangalore
+Udupi
+Kundapur
+Karkala
+Sringeri
+Chikmagalur
+Sakleshpur
+Alur
+Mudigere
+Belur
+Mudigere
+Chikkamagalur
+Tarikere
+Kadur
+Chikkamagalur
+Hassan
+Alur
+Sakleshpur
+Belur
+Halebidu
+Hassan
+Arkalgud
+Sakleshpur
+Kushalnagar
+Madikeri
+Virajpet
+Somwarpet
+Belthangady
+Mangalore
+Udupi
+Kundapur
+Karkala
+Sringeri
+Chikmagalur
+Sakleshpur
+Alur
+Mudigere
+Belur
+Mudigere
+Chikkamagalur
+Tarikere
+Kadur
+Chikkamagalur
+Hassan
+Alur
+Sakleshpur
+Belur
+Halebidu
+Hassan
+Arkalgud
+Sakleshpur
+Kushalnagar
+Madikeri
+Virajpet
+Somwarpet
+Belthangady
+Mangalore
+Udupi
+Kundapur
+Karkala
+Sringeri
+Chikmagalur
+Sakleshpur
+Alur
+Mudigere

@@ -1,7 +1,6 @@
 #include "header_file.h"
 #include "constants.c"
 
-// function to fill the file with random values
 void fillFile(FILE * fp){
     fp = fopen("file.txt", "w");
     srand(time(NULL));
@@ -23,18 +22,84 @@ void fillFile(FILE * fp){
     return;
 }
 // Function to create a new junction node
-Junction* createJunction(int junction_no, int traffic_level, int num_police_officers) {
-    Junction* newJunction = (Junction*)malloc(sizeof(Junction));
+JunctionNode createJunction(int junction_no, int traffic_level, int num_police_officers) {
+    JunctionNode newJunction = (JunctionNode)malloc(sizeof(struct Junction));
     newJunction->junction_no = junction_no;
     newJunction->traffic_level = traffic_level;
     newJunction->num_police_officers = num_police_officers;
     newJunction->left = NULL;
     newJunction->right = NULL;
+    newJunction->height = 0;
     return newJunction;
 }
 
-// to insert the nodes in the tree
-Junction* insertJunction(Junction* root, int junction_no, int traffic_level, int num_police_officers) {
+// Function to get the height of a junction node
+int height(JunctionNode node) {
+    if (node == NULL) {
+        return -1;
+    }
+    return node->height;
+}
+
+// Function to perform right rotation
+JunctionNode rightRotate(JunctionNode x) {
+    JunctionNode y = x->left;
+    JunctionNode z = y->right;
+
+    y->right = x;
+    x->left = z;
+
+    y->height = (height(y->left) > height(y->right) ? height(y->left) : height(y->right)) + 1;
+    x->height = (height(x->left) > height(x->right) ? height(x->left) : height(x->right)) + 1;
+
+    return y;
+}
+
+// Function to perform left rotation
+JunctionNode leftRotate(JunctionNode x) {
+    JunctionNode y = x->right;
+    JunctionNode z = y->left;
+
+    y->left = x;
+    x->right = z;
+
+    y->height = (height(y->left) > height(y->right) ? height(y->left) : height(y->right)) + 1;
+    x->height = (height(x->left) > height(x->right) ? height(x->left) : height(x->right)) + 1;
+
+    return y;
+}
+
+// Function to perform AVL tree rotation
+JunctionNode rotate(JunctionNode node) {
+    if (height(node->left) - height(node->right) > 1) {
+        // left heavy
+        if (height(node->left->left) - height(node->left->right) > 0) {
+            // left left case
+            return rightRotate(node);
+        }
+        if (height(node->left->left) - height(node->left->right) < 0) {
+            // left right case
+            node->left = leftRotate(node->left);
+            return rightRotate(node);
+        }
+    } else if (height(node->left) - height(node->right) < -1) {
+        // right heavy
+        if (height(node->right->left) - height(node->right->right) < 0) {
+            // right right case
+            return leftRotate(node);
+        }
+        if (height(node->right->left) - height(node->right->right) > 0) {
+            // left right case
+            node->right = rightRotate(node->right);
+            return leftRotate(node);
+        }
+    }
+
+    return node;
+}
+
+// Function to insert a junction node into the AVL tree
+JunctionNode insertJunction(JunctionNode root, int junction_no, int traffic_level, int num_police_officers) {
     if (root == NULL) {
         return createJunction(junction_no, traffic_level, num_police_officers);
     }
@@ -45,29 +110,18 @@ Junction* insertJunction(Junction* root, int junction_no, int traffic_level, int
         root->right = insertJunction(root->right, junction_no, traffic_level, num_police_officers);
     }
 
-    return root;
+    root->height = (height(root->left) > height(root->right) ? height(root->left) : height(root->right)) + 1;
+
+    return rotate(root);
 }
 
 // Function to assign police officers based on traffic levels
-int totalOfficersAssigned(Junction* junction) {
-    if (junction == NULL) {
-        return 0;
-    }
-
-    int totalOfficers = junction->num_police_officers;
-    totalOfficers += totalOfficersAssigned(junction->left);
-    totalOfficers += totalOfficersAssigned(junction->right);
-
-    return totalOfficers;
-}
-
-// assigning police officers according to the given conditions below
-Junction* assignOfficers(Junction* root, int junction, int trafficLevel) {
+JunctionNode assignOfficers(JunctionNode root, int junction_no, int trafficLevel) {
     if (root != NULL) {
-        if (junction < root->junction_no) {
-            root->left = assignOfficers(root->left, junction, trafficLevel);
-        } else if (junction > root->junction_no) {
-            root->right = assignOfficers(root->right, junction, trafficLevel);
+        if (junction_no < root->junction_no) {
+            root->left = assignOfficers(root->left, junction_no, trafficLevel);
+        } else if (junction_no > root->junction_no) {
+            root->right = assignOfficers(root->right, junction_no, trafficLevel);
         } else {
             // taking few cases here
             // if trafficLevel 0 - 20 0 officers
@@ -86,10 +140,52 @@ Junction* assignOfficers(Junction* root, int junction, int trafficLevel) {
             return root;
         }
     }
+    return root;
 }
 
-// Function to free the allocated memory for the junction tree
-void freeJunctionTree(Junction* junction) {
+// Function to free the allocated memory for the AVL tree
+void freeAVLTree(JunctionNode root) {
+    if (root == NULL) {
+        return;
+    }
+
+    freeAVLTree(root->left);
+    freeAVLTree(root->right);
+    free(root);
+}
+
+// Function to print the values in the AVL tree
+void printInorder(JunctionNode root) {
+    if (root != NULL) {
+        printInorder(root->left);
+        printf("%d %d %d\n", root->junction_no, root->traffic_level, root->num_police_officers);
+        printInorder(root->right);
+    }
+}
+
+// Function to write in a file
+void writeFile(FILE* fp, JunctionNode root) {
+    if (root != NULL) {
+        writeFile(fp, root->left);
+        fprintf(fp, "%d %d %d\n", root->junction_no, root->traffic_level, root->num_police_officers);
+        writeFile(fp, root->right);
+    }
+}
+
+// Function to assign police officers based on traffic levels
+int totalOfficersAssigned(JunctionNode  junction) {
+    if (junction == NULL) {
+        return 0;
+    }
+
+    int totalOfficers = junction->num_police_officers;
+    totalOfficers += totalOfficersAssigned(junction->left);
+    totalOfficers += totalOfficersAssigned(junction->right);
+
+    return totalOfficers;
+}
+
+void freeJunctionTree(JunctionNode junction) {
     if (junction == NULL) {
         return;
     }
@@ -99,21 +195,6 @@ void freeJunctionTree(Junction* junction) {
     free(junction);
 }
 
-// a function to print the values in the tree
-void printInorder(Junction* root) {
-    if (root != NULL) {
-        printInorder(root->left);
-        printf("%d %d %d \n", root->junction_no, root->traffic_level, root->num_police_officers);
-        printInorder(root->right);
-    }
-}
 
-// a function to write in a file
-void writeFile(FILE* fp, Junction* root) {
-    if (root != NULL) {
-        writeFile(fp, root->left);
-        fprintf(fp, "%d %d %d \n", root->junction_no, root->traffic_level, root->num_police_officers);
-        writeFile(fp, root->right);
-    }
-    return;
-}
+
+

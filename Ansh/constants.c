@@ -6,4 +6,6 @@ int v;
 int distance[MAX_VERTICES];
 int path[MAX_VERTICES];
 int visited[MAX_VERTICES];
-
+int n;
+int start;
+int graph[MAX][MAX];
