@@ -1,16 +1,18 @@
 # depslib dependency file v1.0
-1705229193 source:e:\ph dsa\traffic management\project\ansh\main.c
+1705902940 source:e:\ph dsa\traffic management\project\ansh\main.c
 	"constants.c"
 	"dynamicSpeedBump.c"
 	"AllocationOfPoliceOfficers.c"
 	"MinimalSpanningTree.c"
 	"dijktrasAlgorithm.c"
 	"DFS.c"
+	"PrioritizingVehicals.c"
+	"FenwickVehicleFrequency.c"
 
-1705210357 e:\ph dsa\traffic management\project\ansh\constants.c
+1705902017 e:\ph dsa\traffic management\project\ansh\constants.c
 	"header_file.h"
 
-1705228930 e:\ph dsa\traffic management\project\ansh\header_file.h
+1705903483 e:\ph dsa\traffic management\project\ansh\header_file.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -19,19 +21,29 @@
 	<limits.h>
 	<time.h>
 
-1704978472 e:\ph dsa\traffic management\project\ansh\dynamicspeedbump.c
+1706004422 e:\ph dsa\traffic management\project\ansh\dynamicspeedbump.c
 	"header_file.h"
 	"constants.c"
 
-1705229212 e:\ph dsa\traffic management\project\ansh\allocationofpoliceofficers.c
+1706004871 e:\ph dsa\traffic management\project\ansh\allocationofpoliceofficers.c
 	"header_file.h"
 	"constants.c"
 
-1705042628 e:\ph dsa\traffic management\project\ansh\minimalspanningtree.c
+1706004002 e:\ph dsa\traffic management\project\ansh\minimalspanningtree.c
 	"header_file.h"
 	"constants.c"
 
-1705198279 e:\ph dsa\traffic management\project\ansh\dijktrasalgorithm.c
+1706004591 e:\ph dsa\traffic management\project\ansh\dijktrasalgorithm.c
+	"header_file.h"
+	"constants.c"
 
-1705210160 e:\ph dsa\traffic management\project\ansh\dfs.c
+1706004680 e:\ph dsa\traffic management\project\ansh\dfs.c
+	"header_file.h"
+	"constants.c"
+
+1706004254 e:\ph dsa\traffic management\project\ansh\prioritizingvehicals.c
+	"header_file.h"
+
+1706003647 e:\ph dsa\traffic management\project\ansh\fenwickvehiclefrequency.c
+	"header_file.h"
 

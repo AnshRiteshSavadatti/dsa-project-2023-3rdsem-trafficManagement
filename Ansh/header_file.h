@@ -14,7 +14,7 @@
 FILE *flog;
 
 // definig constants
-#define MAX_VERTICES 20
+#define MAX_VERTICES 100
 
 // Below mentioned are error status/status codes
 #define SUCCESS                     1
@@ -26,7 +26,6 @@ FILE *flog;
 #define RESULT_NOT_FOUND            1005
 #define FILE_EMPTY_ERROR            1006
 #define STATUS_STACK_OVERFLOW      -1073741571
-#define MAX_VERTICES                100
 
 
 //**************************** smart speed bump **********************************************************
@@ -115,9 +114,10 @@ typedef struct nodesNames{
     char areaName[50];
 }nodesNames;
 
+void heapify(int h[], int n);
+int deleteMin(int arr[], int* n);
 void dijkstras(int cost[MAX_VERTICES][MAX_VERTICES], int v, int src);
 void print(int v, nodesNames a[]);
-// void readGraphFromFile(int cost[MAX_VERTICES][MAX_VERTICES]);  // Commented out
 void writeGraphToFile(int cost[MAX_VERTICES][MAX_VERTICES]);
 void generateRandomEdges(int cost[MAX_VERTICES][MAX_VERTICES]);
 void assignCostMatrixValue(int m[][MAX_VERTICES]);
@@ -159,6 +159,31 @@ int pop(stack s);
 void dfs(int graph[MAX][MAX], int n, int start, DFS_Names a[]);
 void fillValue(FILE *fp, int m[][MAX]);
 void fillNames(FILE *fp, DFS_Names a[]);
+
+
+//*************************************  prioritize vehicles ***********************************************************
+// vehicle structure
+
+struct queue{
+    int priority;
+    char name[50];
+    char number[50];
+    struct queue* next;
+};
+
+// typedef the queue
+typedef struct queue* Queue;
+
+int isEmpty(Queue head);
+Queue FindMid(Queue head);
+Queue Merge(Queue left, Queue right);
+Queue MergeSort(Queue head);
+char* Generate_random_string(int length);
+Queue insert_data(Queue n);
+Queue create();
+Queue insert_at_end(Queue head);
+Queue delete_from_front(Queue head);
+void writeToFileQueue(FILE* fp, Queue head);
 
 
 #endif // HEADER_FILE_H_INCLUDED

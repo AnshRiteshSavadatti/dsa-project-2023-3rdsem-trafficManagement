@@ -1,19 +1,33 @@
 #include "header_file.h"
 #include "constants.c"
 
+
 // Function to fill random 1000 values in file of traffic level
-void filldynamicSpeedBump(FILE* fp){
+// Function: filldynamicSpeedBump
+// Description: Fills a file named "dynamicSpeedBump.txt" with random traffic level data
+// Input parameter: fp - file pointer
+// Return type: void
+void filldynamicSpeedBump(FILE* fp)
+{
     // the printing sequence will be i rand%100 1||0
     srand(time(NULL));
     fp = fopen("dynamicSpeedBump.txt", "w");
-    for(int i=0; i<10000; i++){
-        fprintf(fp, "%d %d %d\n", i, rand() %100 + 1 , rand() % 2 );
+    for(int i=0; i<10000; i++)
+    {
+        fprintf(fp, "%d %d %d\n", i, rand() %100 + 1, rand() % 2 );
     }
     fclose(fp);
     return;
 }
+
+
 // Function to create a new smart speed bump
-SpeedBump* createSpeedBump(int laneNumber, int trafficLevel, bool activated) {
+// Function: createSpeedBump
+// Description: Creates a new smart speed bump node
+// Input parameters: laneNumber - lane number, trafficLevel - traffic level, activated - activation status
+// Return type: SpeedBump* - pointer to the newly created speed bump node
+SpeedBump* createSpeedBump(int laneNumber, int trafficLevel, bool activated)
+{
     SpeedBump* newSpeedBump = (SpeedBump*)malloc(sizeof(SpeedBump));
     newSpeedBump->lane_number = laneNumber;
     newSpeedBump->traffic_level = trafficLevel;
@@ -23,8 +37,15 @@ SpeedBump* createSpeedBump(int laneNumber, int trafficLevel, bool activated) {
     return newSpeedBump;
 }
 
+
 // Function to insert a new speed bump into the binary search tree
-SpeedBump* insertSpeedBump(SpeedBump* root, int laneNumber, int trafficLevel, bool activated) {
+// Function: insertSpeedBump
+// Description: Inserts a new speed bump into the binary search tree
+// Input parameters: root - root of the binary search tree, laneNumber - lane number,
+//                   trafficLevel - traffic level, activated - activation status
+// Return type: SpeedBump* - pointer to the root of the updated binary search tree
+SpeedBump* insertSpeedBump(SpeedBump* root, int laneNumber, int trafficLevel, bool activated)
+{
     if (root == NULL)
         return createSpeedBump(laneNumber, trafficLevel, activated);
 
@@ -38,21 +59,32 @@ SpeedBump* insertSpeedBump(SpeedBump* root, int laneNumber, int trafficLevel, bo
     return root;
 }
 
+
 // Function to activate or deactivate a speed bump based on traffic conditions
-SpeedBump* adjustSpeedBumpActivation(SpeedBump* root, int laneNumber, int newTrafficLevel) {
+// Function: adjustSpeedBumpActivation
+// Description: Activates or deactivates a speed bump based on traffic conditions
+// Input parameters: root - root of the binary search tree, laneNumber - lane number, newTrafficLevel - new traffic level
+// Return type: SpeedBump* - pointer to the root of the updated binary search tree
+SpeedBump* adjustSpeedBumpActivation(SpeedBump* root, int laneNumber, int newTrafficLevel)
+{
     SpeedBump* current = root;
 
-    while (current != NULL) {
+    while (current != NULL)
+    {
         if (laneNumber < current->lane_number)
             current = current->left;
         else if (laneNumber > current->lane_number)
             current = current->right;
-        else {
+        else
+        {
             // Found the speed bump with the specified lane number
             // Assuming 15 to be the base case ie if the traffic is greater then 15 speed bump will be activated
-            if (newTrafficLevel > 15) {
+            if (newTrafficLevel > 15)
+            {
                 current->activated = true;
-            } else {
+            }
+            else
+            {
                 current->activated = false;
             }
             current->traffic_level = newTrafficLevel;
@@ -65,9 +97,16 @@ SpeedBump* adjustSpeedBumpActivation(SpeedBump* root, int laneNumber, int newTra
     return root;
 }
 
+
 // Function to display the status of each speed bump in the binary search tree
-void displaySpeedBumps(SpeedBump* root) {
-    if (root != NULL) {
+// Function: displaySpeedBumps
+// Description: Displays the status of each speed bump in the binary search tree
+// Input parameter: root - root of the binary search tree
+// Return type: void
+void displaySpeedBumps(SpeedBump* root)
+{
+    if (root != NULL)
+    {
         displaySpeedBumps(root->left);
         printf("Lane %d - Speed Bump Status: %s - Traffic Level: %d\n",
                root->lane_number, root->activated ? "Activated" : "Deactivated", root->traffic_level);
@@ -75,17 +114,31 @@ void displaySpeedBumps(SpeedBump* root) {
     }
 }
 
+
 // Function to free allocated memory
-void freeSpeedBumps(SpeedBump* root) {
-    if (root != NULL) {
+// Function: freeSpeedBumps
+// Description: Frees the allocated memory for the binary search tree
+// Input parameter: root - root of the binary search tree
+// Return type: void
+void freeSpeedBumps(SpeedBump* root)
+{
+    if (root != NULL)
+    {
         freeSpeedBumps(root->left);
         freeSpeedBumps(root->right);
         free(root);
     }
 }
 
-void writeToFile(SpeedBump* root, FILE* fp){
-    if(root != NULL){
+
+// Function: writeToFile
+// Description: Writes the contents of the binary search tree to a file
+// Input parameters: root - root of the binary search tree, fp - file pointer
+// Return type: void
+void writeToFile(SpeedBump* root, FILE* fp)
+{
+    if(root != NULL)
+    {
         writeToFile(root->left, fp);
         fprintf(fp, "%d %d %d\n", root->lane_number, root->traffic_level, root->activated);
         writeToFile(root->right, fp);

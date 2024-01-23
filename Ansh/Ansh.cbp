@@ -35,7 +35,19 @@
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="DFS.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="FenwickVehicleFrequency.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="MinimalSpanningTree.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="PrioritizingVehicals.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>

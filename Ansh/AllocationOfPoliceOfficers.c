@@ -1,28 +1,45 @@
 #include "header_file.h"
 #include "constants.c"
 
-void fillFile(FILE * fp){
+// Function: fillFile
+// Description: Fills a file with random traffic-related data
+// Input parameter: fp - file pointer
+// Return type: void
+void fillFile(FILE * fp)
+{
     fp = fopen("file.txt", "w");
     srand(time(NULL));
-    for(int i=0; i<40000; i++){
+    for(int i=0; i<80000; i++)
+    {
         // the input must go as
         // i, rand() % 101, 0
 
         int random = rand()%101;
         fprintf(fp, "%d %d ", i, random);
-        if(random <= 20){
+        if(random <= 20)
+        {
             fprintf(fp, "%d\n", 0);
-        }else if(random > 70){
+        }
+        else if(random > 70)
+        {
             fprintf(fp, "%d\n", 2);
-        }else{
+        }
+        else
+        {
             fprintf(fp, "%d\n", 1);
         }
     }
     fclose(fp);
     return;
 }
-// Function to create a new junction node
-JunctionNode createJunction(int junction_no, int traffic_level, int num_police_officers) {
+
+// Function: createJunction
+// Description: Creates a new junction node
+// Input parameters: junction_no - junction number, traffic_level - traffic level,
+//                   num_police_officers - number of police officers
+// Return type: JunctionNode - newly created junction node
+JunctionNode createJunction(int junction_no, int traffic_level, int num_police_officers)
+{
     JunctionNode newJunction = (JunctionNode)malloc(sizeof(struct Junction));
     newJunction->junction_no = junction_no;
     newJunction->traffic_level = traffic_level;
@@ -33,16 +50,25 @@ JunctionNode createJunction(int junction_no, int traffic_level, int num_police_o
     return newJunction;
 }
 
-// Function to get the height of a junction node
-int height(JunctionNode node) {
-    if (node == NULL) {
+// Function: height
+// Description: Gets the height of a junction node
+// Input parameter: node - junction node
+// Return type: int - height of the node
+int height(JunctionNode node)
+{
+    if (node == NULL)
+    {
         return -1;
     }
     return node->height;
 }
 
-// Function to perform right rotation
-JunctionNode rightRotate(JunctionNode x) {
+// Function: rightRotate
+// Description: Performs right rotation in AVL tree
+// Input parameter: x - junction node
+// Return type: JunctionNode - new root after rotation
+JunctionNode rightRotate(JunctionNode x)
+{
     JunctionNode y = x->left;
     JunctionNode z = y->right;
 
@@ -55,8 +81,12 @@ JunctionNode rightRotate(JunctionNode x) {
     return y;
 }
 
-// Function to perform left rotation
-JunctionNode leftRotate(JunctionNode x) {
+// Function: leftRotate
+// Description: Performs left rotation in AVL tree
+// Input parameter: x - junction node
+// Return type: JunctionNode - new root after rotation
+JunctionNode leftRotate(JunctionNode x)
+{
     JunctionNode y = x->right;
     JunctionNode z = y->left;
 
@@ -69,26 +99,37 @@ JunctionNode leftRotate(JunctionNode x) {
     return y;
 }
 
-// Function to perform AVL tree rotation
-JunctionNode rotate(JunctionNode node) {
-    if (height(node->left) - height(node->right) > 1) {
+// Function: rotate
+// Description: Performs AVL tree rotation
+// Input parameter: node - junction node
+// Return type: JunctionNode - new root after rotation
+JunctionNode rotate(JunctionNode node)
+{
+    if (height(node->left) - height(node->right) > 1)
+    {
         // left heavy
-        if (height(node->left->left) - height(node->left->right) > 0) {
+        if (height(node->left->left) - height(node->left->right) > 0)
+        {
             // left left case
             return rightRotate(node);
         }
-        if (height(node->left->left) - height(node->left->right) < 0) {
+        if (height(node->left->left) - height(node->left->right) < 0)
+        {
             // left right case
             node->left = leftRotate(node->left);
             return rightRotate(node);
         }
-    } else if (height(node->left) - height(node->right) < -1) {
+    }
+    else if (height(node->left) - height(node->right) < -1)
+    {
         // right heavy
-        if (height(node->right->left) - height(node->right->right) < 0) {
+        if (height(node->right->left) - height(node->right->right) < 0)
+        {
             // right right case
             return leftRotate(node);
         }
-        if (height(node->right->left) - height(node->right->right) > 0) {
+        if (height(node->right->left) - height(node->right->right) > 0)
+        {
             // left right case
             node->right = rightRotate(node->right);
             return leftRotate(node);
@@ -98,15 +139,24 @@ JunctionNode rotate(JunctionNode node) {
     return node;
 }
 
-// Function to insert a junction node into the AVL tree
-JunctionNode insertJunction(JunctionNode root, int junction_no, int traffic_level, int num_police_officers) {
-    if (root == NULL) {
+// Function: insertJunction
+// Description: Inserts a junction node into the AVL tree
+// Input parameters: root - root of the AVL tree, junction_no - junction number,
+//                   traffic_level - traffic level, num_police_officers - number of police officers
+// Return type: JunctionNode - new root after insertion
+JunctionNode insertJunction(JunctionNode root, int junction_no, int traffic_level, int num_police_officers)
+{
+    if (root == NULL)
+    {
         return createJunction(junction_no, traffic_level, num_police_officers);
     }
 
-    if (junction_no < root->junction_no) {
+    if (junction_no < root->junction_no)
+    {
         root->left = insertJunction(root->left, junction_no, traffic_level, num_police_officers);
-    } else if (junction_no > root->junction_no) {
+    }
+    else if (junction_no > root->junction_no)
+    {
         root->right = insertJunction(root->right, junction_no, traffic_level, num_police_officers);
     }
 
@@ -116,24 +166,41 @@ JunctionNode insertJunction(JunctionNode root, int junction_no, int traffic_leve
 }
 
 // Function to assign police officers based on traffic levels
-JunctionNode assignOfficers(JunctionNode root, int junction_no, int trafficLevel) {
-    if (root != NULL) {
-        if (junction_no < root->junction_no) {
+// Function: assignOfficers
+// Description: Assigns police officers based on traffic levels in the AVL tree
+// Input parameters: root - root of the AVL tree, junction_no - junction number,
+//                   trafficLevel - traffic level
+// Return type: JunctionNode - new root after assignment
+JunctionNode assignOfficers(JunctionNode root, int junction_no, int trafficLevel)
+{
+    if (root != NULL)
+    {
+        if (junction_no < root->junction_no)
+        {
             root->left = assignOfficers(root->left, junction_no, trafficLevel);
-        } else if (junction_no > root->junction_no) {
+        }
+        else if (junction_no > root->junction_no)
+        {
             root->right = assignOfficers(root->right, junction_no, trafficLevel);
-        } else {
+        }
+        else
+        {
             // taking few cases here
             // if trafficLevel 0 - 20 0 officers
             // 20 - 35 1 officer
             // 35 - 70 2 officer
-            if (trafficLevel <= 20) {
+            if (trafficLevel <= 20)
+            {
                 root->num_police_officers = 0;
                 root->traffic_level = trafficLevel;
-            } else if (trafficLevel > 70) {
+            }
+            else if (trafficLevel > 70)
+            {
                 root->num_police_officers = 2;
                 root->traffic_level = trafficLevel;
-            } else {
+            }
+            else
+            {
                 root->num_police_officers = 1;
                 root->traffic_level = trafficLevel;
             }
@@ -143,9 +210,14 @@ JunctionNode assignOfficers(JunctionNode root, int junction_no, int trafficLevel
     return root;
 }
 
-// Function to free the allocated memory for the AVL tree
-void freeAVLTree(JunctionNode root) {
-    if (root == NULL) {
+// Function: freeAVLTree
+// Description: Frees the allocated memory for the AVL tree
+// Input parameter: root - root of the AVL tree
+// Return type: void
+void freeAVLTree(JunctionNode root)
+{
+    if (root == NULL)
+    {
         return;
     }
 
@@ -154,18 +226,28 @@ void freeAVLTree(JunctionNode root) {
     free(root);
 }
 
-// Function to print the values in the AVL tree
-void printInorder(JunctionNode root) {
-    if (root != NULL) {
+// Function: printInorder
+// Description: Prints the values in the AVL tree in inorder
+// Input parameter: root - root of the AVL tree
+// Return type: void
+void printInorder(JunctionNode root)
+{
+    if (root != NULL)
+    {
         printInorder(root->left);
         printf("%d %d %d\n", root->junction_no, root->traffic_level, root->num_police_officers);
         printInorder(root->right);
     }
 }
 
-// Function to write in a file
-void writeFile(FILE* fp, JunctionNode root) {
-    if (root != NULL) {
+// Function: writeFile
+// Description: Writes the values in the AVL tree to a file
+// Input parameters: fp - file pointer, root - root of the AVL tree
+// Return type: void
+void writeFile(FILE* fp, JunctionNode root)
+{
+    if (root != NULL)
+    {
         writeFile(fp, root->left);
         fprintf(fp, "%d %d %d\n", root->junction_no, root->traffic_level, root->num_police_officers);
         writeFile(fp, root->right);
@@ -173,8 +255,14 @@ void writeFile(FILE* fp, JunctionNode root) {
 }
 
 // Function to assign police officers based on traffic levels
-int totalOfficersAssigned(JunctionNode  junction) {
-    if (junction == NULL) {
+// Function: totalOfficersAssigned
+// Description: Calculates the total number of police officers assigned in the AVL tree
+// Input parameter: junction - root of the AVL tree
+// Return type: int - total number of police officers assigned
+int totalOfficersAssigned(JunctionNode  junction)
+{
+    if (junction == NULL)
+    {
         return 0;
     }
 
@@ -185,8 +273,14 @@ int totalOfficersAssigned(JunctionNode  junction) {
     return totalOfficers;
 }
 
-void freeJunctionTree(JunctionNode junction) {
-    if (junction == NULL) {
+// Function: freeJunctionTree
+// Description: Frees the allocated memory for the AVL tree
+// Input parameter: junction - root of the AVL tree
+// Return type: void
+void freeJunctionTree(JunctionNode junction)
+{
+    if (junction == NULL)
+    {
         return;
     }
 
